@@ -3,8 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chat with Multiple PDFs — Gemini 1.5 Flash</title>
+  <title>Gemini PDF Assistant</title>
   <link rel="stylesheet" href="styles.css"/>
+  <script>
+    async function uploadPDFs(event) {
+      event.preventDefault();
+      const files = document.getElementById("pdfs").files;
+      const formData = new FormData();
+      for (const file of files) {
+        formData.append("files", file);
+      }
+      const response = await fetch("http://localhost:8000/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      document.getElementById("sessionId").value = data.session_id;
+      alert(data.message);
+    }
+
+    async function askQuestion(event) {
+      event.preventDefault();
+      const sessionId = document.getElementById("sessionId").value;
+      const question = document.getElementById("question").value;
+      const response = await fetch("http://localhost:8000/ask", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ session_id: sessionId, question: question }),
+      });
+      const data = await response.json();
+      document.getElementById("answer").innerText = data.answer;
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -32,7 +62,5 @@
       <small>Powered by LangChain • Gemini 1.5 Flash • FAISS</small>
     </footer>
   </div>
-
-  <script src="app.js"></script>
 </body>
 </html>

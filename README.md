@@ -1,14 +1,9 @@
-# Chat with Multiple PDFs using Gemini 1.5 Flash
+# Gemini PDF Assistant
 
-A powerful FastAPI application that enables conversational interactions with multiple PDF documents using Google's Gemini 1.5 Flash model. The application implements RAG (Retrieval Augmented Generation) pattern to provide accurate, context-aware responses based on the content of uploaded PDFs.
+A FastAPI-based application that enables intelligent conversations with PDF documents using Google's Gemini 1.5 Flash model.
 
-## Architecture
-
-- **FastAPI Backend**: High-performance async web framework
-- **LangChain**: Orchestrates the document processing and LLM interaction
-- **FAISS**: Facebook AI Similarity Search for efficient vector storage and retrieval
-- **Google Gemini 1.5 Flash**: State-of-the-art language model for generating responses
-- **PyPDF**: PDF document processing and text extraction
+[![GitHub](https://img.shields.io/github/license/MishraNehal/Gemini-PDF-Assistant)](https://github.com/MishraNehal/Gemini-PDF-Assistant/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/MishraNehal/Gemini-PDF-Assistant)](https://github.com/MishraNehal/Gemini-PDF-Assistant/stargazers)
 
 ## Features
 
@@ -32,8 +27,8 @@ A powerful FastAPI application that enables conversational interactions with mul
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
-cd chat-multi-pdf-gemini-flash
+git clone https://github.com/MishraNehal/Gemini-PDF-Assistant.git
+cd Gemini-PDF-Assistant
 ```
 
 2. Create and activate virtual environment:
@@ -59,6 +54,25 @@ CORS_ORIGINS=http://localhost:8000
 ```bash
 uvicorn app:app --reload --port 8000
 ```
+
+## Running the Application
+
+### Backend
+1. Open a terminal and navigate to the backend folder:
+   ```
+   cd d:\Projects\chat-multi-pdf-gemini-flash\backend
+   ```
+2. Run the backend using uvicorn:
+   ```
+   uvicorn app:app --reload --port 8000
+   ```
+
+### Frontend
+1. Open the frontend file in your browser:
+   ```
+   d:\Projects\chat-multi-pdf-gemini-flash\frontend\index.html
+   ```
+2. Use the UI to upload PDFs and ask questions. The frontend communicates with the backend at http://localhost:8000.
 
 ## API Documentation
 
