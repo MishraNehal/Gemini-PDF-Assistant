@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat with Multiple PDFs — Gemini 1.5 Flash</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📄 Chat with Multiple PDFs</h1>
+      <p class="sub">LangChain + Gemini 1.5 Flash • No Streamlit</p>
+    </header>
+
+    <section class="uploader">
+      <input id="pdfs" type="file" accept="application/pdf" multiple />
+      <button id="uploadBtn">Build Index</button>
+      <span id="status"></span>
+    </section>
+
+    <section class="chat">
+      <div id="chatWindow" class="chat-window"></div>
+      <div class="controls">
+        <input id="question" type="text" placeholder="Ask a question about your PDFs..." />
+        <button id="askBtn">Ask</button>
+        <button id="resetBtn" class="ghost">Reset</button>
+      </div>
+    </section>
+
+    <footer>
+      <small>Powered by LangChain • Gemini 1.5 Flash • FAISS</small>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
