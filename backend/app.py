@@ -1,6 +1,7 @@
 import os
 import io
 import uuid
+import tempfile
 from typing import List, Dict, Any, Optional
 
 from fastapi import FastAPI, UploadFile, File, Form
@@ -59,16 +60,22 @@ def _build_vectorstore_from_pdfs(files: List[UploadFile]) -> FAISS:
         # Read into memory and feed to PyPDFLoader via temp file-like
         data = uf.file.read()
         bio = io.BytesIO(data)
-        tmp_path = f"/tmp/{uuid.uuid4()}.pdf"
-        with open(tmp_path, "wb") as out:
-            out.write(bio.getbuffer())
-        loader = PyPDFLoader(tmp_path)
-        docs = loader.load()
-        documents.extend(docs)
+        
+        # Use tempfile module for cross-platform compatibility
+        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp_file:
+            tmp_path = tmp_file.name
+            tmp_file.write(bio.getbuffer())
+        
         try:
-            os.remove(tmp_path)
-        except Exception:
-            pass
+            loader = PyPDFLoader(tmp_path)
+            docs = loader.load()
+            documents.extend(docs)
+        finally:
+            # Clean up temporary file
+            try:
+                os.remove(tmp_path)
+            except Exception:
+                pass
 
     # Split
     splitter = RecursiveCharacterTextSplitter(
@@ -80,7 +87,7 @@ def _build_vectorstore_from_pdfs(files: List[UploadFile]) -> FAISS:
 
     # Embeddings (Google)
     embeddings = GoogleGenerativeAIEmbeddings(
-        model="text-embedding-004",
+        model="models/embedding-001",
         google_api_key=GOOGLE_API_KEY,
     )
 
@@ -101,7 +108,7 @@ def _get_or_create_chain(session_id: str):
     )
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="models/gemini-1.5-flash",
         google_api_key=GOOGLE_API_KEY,
         temperature=0.2,
     )

@@ -1,200 +1,177 @@
-# Gemini PDF Assistant
+# 📚 Gemini PDF Assistant
 
-A FastAPI-based application that enables intelligent conversations with PDF documents using Google's Gemini 1.5 Flash model.
+A powerful AI-powered document analysis application that allows you to chat with your PDF documents using Google's Gemini 1.5 Flash model. Built with FastAPI backend and Streamlit frontend for a modern, professional user experience.
 
-[![GitHub](https://img.shields.io/github/license/MishraNehal/Gemini-PDF-Assistant)](https://github.com/MishraNehal/Gemini-PDF-Assistant/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/MishraNehal/Gemini-PDF-Assistant)](https://github.com/MishraNehal/Gemini-PDF-Assistant/stargazers)
+## ✨ Features
 
-## Features
+- **Multi-PDF Support**: Upload and analyze multiple PDF documents simultaneously
+- **AI-Powered Q&A**: Ask questions about your documents and get intelligent answers
+- **Source Citations**: Every answer includes page references and source information
+- **Professional UI**: Beautiful Streamlit interface with gradient designs and animations
+- **Real-time Processing**: Live status updates and progress tracking
+- **Session Management**: Maintain conversation context across multiple questions
+- **Cross-platform**: Works on Windows, macOS, and Linux
 
-- Upload and process multiple PDF documents simultaneously
-- Intelligent document chunking and embedding generation
-- Vector similarity search for relevant context retrieval
-- Session management for multiple parallel conversations
-- Source attribution for generated responses
-- Configurable CORS support
-- Conversation history management
-- Health check endpoint for monitoring
+## 🏗️ Architecture
 
-## Prerequisites
+- **Backend**: FastAPI with Python
+- **Frontend**: Streamlit (converted from HTML/CSS/JS)
+- **AI Model**: Google Gemini 1.5 Flash
+- **Vector Store**: FAISS for similarity search
+- **Document Processing**: LangChain for PDF handling
+- **Embeddings**: Google AI Embeddings API
+
+## 🚀 Quick Start
+
+### Prerequisites
 
 - Python 3.8+
-- Google API key with access to Gemini API
-- Sufficient storage for vector embeddings
-- PDF documents for querying
+- Google AI API Key
+- Virtual environment (recommended)
 
-## Setup
+### Installation
 
-1. Clone the repository:
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd chat-multi-pdf-gemini-flash
+   ```
+
+2. **Create and activate virtual environment**
+   ```bash
+   python -m venv venv
+   
+   # Windows
+   .\venv\Scripts\Activate.ps1
+   
+   # macOS/Linux
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   GOOGLE_API_KEY=your_google_ai_api_key_here
+   ```
+
+### Running the Application
+
+#### Option 1: Use the Launcher Script (Recommended)
 ```bash
-git clone https://github.com/MishraNehal/Gemini-PDF-Assistant.git
-cd Gemini-PDF-Assistant
+python run_app.py
 ```
+This will automatically start both backend and frontend.
 
-2. Create and activate virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or
-.\venv\Scripts\activate  # Windows
-```
+#### Option 2: Manual Start
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Create a .env file with required configurations:
-```
-GOOGLE_API_KEY=your-api-key-here
-CORS_ORIGINS=http://localhost:8000
-```
-
-5. Run the application:
-```bash
-uvicorn app:app --reload --port 8000
-```
-
-## Running the Application
-
-### Backend
-1. Open a terminal and navigate to the backend folder:
-   ```
-   cd d:\Projects\chat-multi-pdf-gemini-flash\backend
-   ```
-2. Run the backend using uvicorn:
-   ```
-   uvicorn app:app --reload --port 8000
+1. **Start the FastAPI backend**
+   ```bash
+   cd backend
+   uvicorn app:app --reload --host 0.0.0.0 --port 8000
    ```
 
-### Frontend
-1. Open the frontend file in your browser:
+2. **Start the Streamlit frontend** (in a new terminal)
+   ```bash
+   cd frontend
+   streamlit run streamlit_app.py --server.port 8501
    ```
-   d:\Projects\chat-multi-pdf-gemini-flash\frontend\index.html
-   ```
-2. Use the UI to upload PDFs and ask questions. The frontend communicates with the backend at http://localhost:8000.
 
-## API Documentation
+3. **Access the application**
+   - Frontend: http://localhost:8501
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
 
-### Upload PDFs
-```http
-POST /upload
-Content-Type: multipart/form-data
+## 📖 How to Use
 
-files: [file1.pdf, file2.pdf, ...]
+1. **Upload Documents**: Use the sidebar to upload one or more PDF files
+2. **Process Documents**: Click "Process Documents" to index them with AI
+3. **Ask Questions**: Start asking questions about your documents
+4. **Get Answers**: Receive AI-powered responses with source citations
+5. **Manage Sessions**: Reset or clear chat history as needed
+
+## 🔧 Configuration
+
+### Backend Configuration
+- **Port**: Default 8000 (configurable in `backend/app.py`)
+- **Host**: 0.0.0.0 for network access
+- **Model**: Gemini 1.5 Flash (configurable)
+
+### Frontend Configuration
+- **Port**: Default 8501 (configurable)
+- **Theme**: Professional gradient design
+- **Responsive**: Works on desktop and mobile
+
+## 📁 Project Structure
+
 ```
-Response:
-```json
-{
-    "session_id": "uuid",
-    "message": "PDFs indexed successfully."
-}
-```
-
-### Ask Questions
-```http
-POST /ask
-Content-Type: application/json
-
-{
-    "session_id": "uuid",
-    "question": "What does the document say about...?"
-}
-```
-Response:
-```json
-{
-    "answer": "Generated response...",
-    "sources": [
-        {
-            "source": "document1.pdf",
-            "page": 1,
-            "snippet": "Relevant context..."
-        }
-    ]
-}
+chat-multi-pdf-gemini-flash/
+├── backend/
+│   └── app.py                 # FastAPI backend application
+├── frontend/
+│   └── streamlit_app.py       # Streamlit frontend application
+├── venv/                      # Virtual environment
+├── requirements.txt            # Python dependencies
+├── run_app.py                 # Application launcher
+├── .env                       # Environment variables
+└── README.md                  # This file
 ```
 
-### Reset Session
-```http
-POST /reset
-Content-Type: application/json
+## 🆕 Recent Updates
 
-{
-    "session_id": "uuid"
-}
-```
-Response:
-```json
-{
-    "message": "History cleared."
-}
-```
+### Version 2.0.0 - Streamlit Frontend
+- **Complete Frontend Overhaul**: Converted from HTML/CSS/JS to Streamlit
+- **Professional UI Design**: Modern gradient backgrounds and animations
+- **Enhanced User Experience**: Better chat interface with avatars
+- **Improved Status Monitoring**: Real-time metrics and system status
+- **Cross-platform Compatibility**: Fixed Windows-specific file path issues
+- **Button ID Fixes**: Resolved Streamlit duplicate element issues
 
-### Health Check
-```http
-GET /health
-```
-Response:
-```json
-{
-    "status": "ok"
-}
-```
+### Version 1.0.0 - Initial Release
+- Basic FastAPI backend with Gemini integration
+- HTML/CSS/JS frontend
+- PDF processing and Q&A functionality
 
-## Technical Details
+## 🐛 Troubleshooting
 
-### Document Processing
-- Chunks documents into 1200-character segments with 200-character overlap
-- Uses RecursiveCharacterTextSplitter for intelligent document splitting
-- Generates embeddings using Google's text-embedding-004 model
-- Stores vectors in FAISS for efficient similarity search
+### Common Issues
 
-### Question Answering
-- Retrieves top 4 most relevant document chunks
-- Uses Gemini 1.5 Flash with temperature 0.2 for balanced responses
-- Maintains conversation history for context-aware answers
-- Provides source attribution for transparency
+1. **Backend Connection Error**
+   - Ensure the backend is running on port 8000
+   - Check if the virtual environment is activated
+   - Verify your Google API key is set correctly
 
-## Error Handling
+2. **PDF Processing Errors**
+   - Ensure PDFs are not corrupted
+   - Check file size limits
+   - Verify backend is accessible
 
-The API includes comprehensive error handling for:
-- Invalid session IDs
-- PDF processing failures
-- LLM generation errors
-- Missing or invalid API keys
-- File upload issues
+3. **Streamlit Button Errors**
+   - All buttons now have unique keys
+   - Refresh the browser if issues persist
 
-## Security Considerations
+### Performance Tips
 
-- API keys stored in environment variables
-- CORS configuration for controlled access
-- Session-based conversation management
-- No permanent storage of uploaded documents
-- Memory-based vector storage (for demo purposes)
+- Use smaller PDF files for faster processing
+- Close unnecessary browser tabs
+- Ensure adequate system memory
 
-## Limitations
+## 🤝 Contributing
 
-- In-memory storage (not suitable for production)
-- Limited by Gemini API quotas
-- PDF processing may be memory-intensive
-- Session data lost on server restart
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-## Future Improvements
+## 📄 License
 
-- Persistent storage for vector embeddings
-- Database integration for session management
-- Support for more document formats
-- Streaming responses
-- Rate limiting
-- Authentication/Authorization
-- Docker containerization
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Contributing
 
-Contributions are welcome! Please feel free to submit pull requests.
 
-## License
-
-MIT
 
